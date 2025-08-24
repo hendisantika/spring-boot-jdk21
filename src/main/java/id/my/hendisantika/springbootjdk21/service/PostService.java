@@ -1,8 +1,11 @@
 package id.my.hendisantika.springbootjdk21.service;
 
+import id.my.hendisantika.springbootjdk21.entity.Post;
 import id.my.hendisantika.springbootjdk21.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,4 +23,8 @@ import org.springframework.stereotype.Service;
 public class PostService {
 
     private final PostRepository postRepository;
+
+    public List<Post> getAllPosts() {
+        return postRepository.findAll();
+    }
 }
