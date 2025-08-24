@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,5 +52,11 @@ public class AuthController {
     public ResponseEntity<String> signOut(HttpServletRequest request, HttpServletResponse response) {
         authService.signOut(request, response);
         return new ResponseEntity<>("Successfully signed out", HttpStatus.OK);
+    }
+
+    @PutMapping("/make-user-admin")
+    public ResponseEntity<Void> makeUserAdmin(HttpServletRequest request) {
+        authService.makeUserAdmin(request);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
