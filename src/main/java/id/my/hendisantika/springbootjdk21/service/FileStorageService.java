@@ -49,4 +49,8 @@ public class FileStorageService {
         Path filePath = this.rootLocation.resolve(filename);
         return Files.readAllBytes(filePath);
     }
+
+    private String getFileExtension(String filename) {
+        return filename.substring(filename.lastIndexOf(".") + 1);
+    }
 }
