@@ -1,6 +1,9 @@
 package id.my.hendisantika.springbootjdk21.service;
 
+import id.my.hendisantika.springbootjdk21.dto.SignUpDTO;
+import id.my.hendisantika.springbootjdk21.entity.User;
 import id.my.hendisantika.springbootjdk21.repository.UserRepository;
+import id.my.hendisantika.springbootjdk21.security.RoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,4 +29,15 @@ public class AuthService {
     private final String COOKIE_NAME = "SESSIONID";
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    public User signUp(SignUpDTO request) {
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setEncodedPassword(passwordEncoder.encode(request.getPassword()));
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setRoleId(RoleEnum.SIGNED_OUT.getRoleId());
+        user.setRoleName(RoleEnum.SIGNED_OUT.getRoleName());
+        return userRepository.save(user);
+    }
 }
