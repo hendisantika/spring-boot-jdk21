@@ -2,6 +2,8 @@ package id.my.hendisantika.springbootjdk21.service;
 
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -19,5 +21,11 @@ import java.nio.file.Paths;
 @Service
 public class FileStorageService {
     private final Path rootLocation = Paths.get("uploads");
+
+    public FileStorageService() throws IOException {
+        if (!Files.exists(rootLocation)) {
+            Files.createDirectories(rootLocation);
+        }
+    }
 
 }
