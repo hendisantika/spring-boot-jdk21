@@ -44,4 +44,9 @@ public class FileStorageService {
         Files.copy(file.getInputStream(), this.rootLocation.resolve(filename));
         return filename;
     }
+
+    public byte[] getFile(String filename) throws IOException {
+        Path filePath = this.rootLocation.resolve(filename);
+        return Files.readAllBytes(filePath);
+    }
 }
