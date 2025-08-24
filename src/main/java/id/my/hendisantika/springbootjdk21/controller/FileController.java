@@ -38,4 +38,14 @@ public class FileController {
             return ResponseEntity.badRequest().body("Failed to upload image: " + e.getMessage());
         }
     }
+
+    @PostMapping("/upload/pdf")
+    public ResponseEntity<String> uploadPdf(@RequestParam("file") MultipartFile file) {
+        try {
+            String filename = fileStorageService.saveFile(file, "pdf");
+            return ResponseEntity.ok("PDF uploaded successfully: " + filename);
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().body("Failed to upload PDF: " + e.getMessage());
+        }
+    }
 }
