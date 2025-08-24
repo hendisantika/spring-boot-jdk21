@@ -1,0 +1,49 @@
+<section th:fragment="all-posts">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Blog Posts</h2>
+    <form
+            hx-post="/htmx/posts"
+            hx-swap="innerHTML"
+            hx-target="#posts-list"
+            id="create-post-form">
+        <div class="mb-4">
+            <label class="block text-gray-700" for="post-text">New Post:</label>
+            <textarea
+                    class="w-full p-2 border rounded"
+                    id="post-text"
+                    name="text"
+                    rows="3"
+            ></textarea>
+        </div>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded" type="submit">
+            Create Post
+        </button>
+    </form>
+
+    <div class="space-y-6 mt-4" id="posts-list">
+        <div class="p-6 bg-white shadow-md rounded-lg" th:each="post : ${posts}">
+            <p class="text-gray-700" th:text="${post.text}">Post Content</p>
+
+            <div class="flex space-x-2 mt-2">
+                <button
+                        class="bg-yellow-500 text-white px-4 py-2 rounded"
+                        hx-swap="innerHTML"
+                        hx-target="#edit-post-form"
+                        th:attr="hx-get=@{/htmx/posts/{id}/edit(id=${post.id})}"
+                >
+                    Edit
+                </button>
+
+                <button
+                        class="bg-red-500 text-white px-4 py-2 rounded"
+                        hx-swap="innerHTML"
+                        hx-target="#posts-list"
+                        th:attr="hx-delete=@{/htmx/posts/{id}(id=${post.id})}"
+                >
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4" id="edit-post-form"></div>
+</section>
