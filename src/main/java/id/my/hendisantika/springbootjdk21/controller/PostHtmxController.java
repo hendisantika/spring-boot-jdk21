@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -36,5 +38,15 @@ public class PostHtmxController {
         model.addAttribute("content", "all-posts");
         model.addAttribute("posts", posts);
         return "index";
+    }
+
+    @PostMapping
+    public String createPost(@RequestParam String text, Model model) {
+        Post post = new Post();
+        post.setText(text);
+        postService.createPost(post);
+        List<Post> posts = postService.getAllPosts();
+        model.addAttribute("posts", posts);
+        return "blog/all-posts :: #posts-list";
     }
 }
