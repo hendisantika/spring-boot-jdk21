@@ -1,8 +1,10 @@
 package id.my.hendisantika.springbootjdk21.controller;
 
+import id.my.hendisantika.springbootjdk21.dto.SignInDTO;
 import id.my.hendisantika.springbootjdk21.dto.SignUpDTO;
 import id.my.hendisantika.springbootjdk21.entity.User;
 import id.my.hendisantika.springbootjdk21.service.AuthService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,5 +35,14 @@ public class AuthController {
     public ResponseEntity<User> signUp(@RequestBody SignUpDTO signUpDTO) {
         User user = authService.signUp(signUpDTO);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<?> signIn(@RequestBody SignInDTO signInDTO, HttpServletResponse response) {
+        User user = authService.signIn(signInDTO, response);
+        if (user == null) {
+            return new ResponseEntity<>("Invalid email or password", HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
