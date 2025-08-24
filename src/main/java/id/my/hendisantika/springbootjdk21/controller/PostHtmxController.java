@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,5 +49,12 @@ public class PostHtmxController {
         List<Post> posts = postService.getAllPosts();
         model.addAttribute("posts", posts);
         return "blog/all-posts :: #posts-list";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String getPostForEdit(@PathVariable Long id, Model model) {
+        Post post = postService.getPostById(id);
+        model.addAttribute("post", post);
+        return "blog/edit-post-form :: #edit-form-container";
     }
 }
