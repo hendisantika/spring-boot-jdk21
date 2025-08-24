@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,5 +57,15 @@ public class PostHtmxController {
         Post post = postService.getPostById(id);
         model.addAttribute("post", post);
         return "blog/edit-post-form :: #edit-form-container";
+    }
+
+    @PatchMapping("/{id}")
+    public String updatePost(@PathVariable Long id, @RequestParam String text, Model model) {
+        Post post = postService.getPostById(id);
+        post.setText(text);
+        postService.updatePost(id, post);
+        List<Post> posts = postService.getAllPosts();
+        model.addAttribute("posts", posts);
+        return "blog/all-posts :: #posts-list";
     }
 }
