@@ -201,6 +201,12 @@ The project includes comprehensive integration tests using Testcontainers that s
 - **Service Layer Tests**: Tests business logic with full Spring context and database
 - **Isolated Test Environment**: Each test class gets a fresh database state
 
+**Note**: Integration tests require Docker to be running. If Docker is not available, you can run only unit tests:
+
+```bash
+./mvnw test -Dtest="SimpleUnitTest"
+```
+
 ### Creating Docker Image
 
 ```bash

@@ -3,7 +3,6 @@ package id.my.hendisantika.springbootjdk21.repository;
 import id.my.hendisantika.springbootjdk21.TestcontainersConfiguration;
 import id.my.hendisantika.springbootjdk21.entity.Post;
 import id.my.hendisantika.springbootjdk21.entity.User;
-import id.my.hendisantika.springbootjdk21.security.RoleEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -32,47 +31,43 @@ class PostRepositoryIntegrationTest {
     @Test
     void shouldSaveAndFindPost() {
         User author = User.builder()
-                .name("John Doe")
+                .firstName("John")
+                .lastName("Doe")
                 .email("john@example.com")
-                .password("password")
-                .role(RoleEnum.USER)
+                .encodedPassword("password")
+                .roleId(1)
                 .build();
 
         User savedAuthor = userRepository.save(author);
 
         Post post = Post.builder()
-                .title("Test Post")
-                .content("This is a test post content")
-                .author(savedAuthor)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .text("This is a test post content")
+                .dateAdded(LocalDateTime.now())
+                .dateModified(LocalDateTime.now())
                 .build();
 
         Post savedPost = postRepository.save(post);
 
         assertThat(savedPost.getId()).isNotNull();
-        assertThat(savedPost.getTitle()).isEqualTo("Test Post");
-        assertThat(savedPost.getContent()).isEqualTo("This is a test post content");
-        assertThat(savedPost.getAuthor().getName()).isEqualTo("John Doe");
+        assertThat(savedPost.getText()).isEqualTo("This is a test post content");
     }
 
     @Test
     void shouldFindPostById() {
         User author = User.builder()
-                .name("Jane Doe")
+                .firstName("Jane")
+                .lastName("Doe")
                 .email("jane@example.com")
-                .password("password")
-                .role(RoleEnum.USER)
+                .encodedPassword("password")
+                .roleId(1)
                 .build();
 
         User savedAuthor = userRepository.save(author);
 
         Post post = Post.builder()
-                .title("Another Test Post")
-                .content("Another test post content")
-                .author(savedAuthor)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .text("Another test post content")
+                .dateAdded(LocalDateTime.now())
+                .dateModified(LocalDateTime.now())
                 .build();
 
         Post savedPost = postRepository.save(post);
@@ -80,35 +75,31 @@ class PostRepositoryIntegrationTest {
         Optional<Post> foundPost = postRepository.findById(savedPost.getId());
 
         assertThat(foundPost).isPresent();
-        assertThat(foundPost.get().getTitle()).isEqualTo("Another Test Post");
-        assertThat(foundPost.get().getAuthor().getEmail()).isEqualTo("jane@example.com");
+        assertThat(foundPost.get().getText()).isEqualTo("Another test post content");
     }
 
     @Test
     void shouldFindAllPosts() {
         User author = User.builder()
-                .name("Test User")
+                .firstName("Test")
+                .lastName("User")
                 .email("test@example.com")
-                .password("password")
-                .role(RoleEnum.USER)
+                .encodedPassword("password")
+                .roleId(1)
                 .build();
 
         User savedAuthor = userRepository.save(author);
 
         Post post1 = Post.builder()
-                .title("First Post")
-                .content("First post content")
-                .author(savedAuthor)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .text("First post content")
+                .dateAdded(LocalDateTime.now())
+                .dateModified(LocalDateTime.now())
                 .build();
 
         Post post2 = Post.builder()
-                .title("Second Post")
-                .content("Second post content")
-                .author(savedAuthor)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .text("Second post content")
+                .dateAdded(LocalDateTime.now())
+                .dateModified(LocalDateTime.now())
                 .build();
 
         postRepository.save(post1);
@@ -117,27 +108,26 @@ class PostRepositoryIntegrationTest {
         List<Post> allPosts = postRepository.findAll();
 
         assertThat(allPosts).hasSize(2);
-        assertThat(allPosts).extracting(Post::getTitle)
-                .containsExactlyInAnyOrder("First Post", "Second Post");
+        assertThat(allPosts).extracting(Post::getText)
+                .containsExactlyInAnyOrder("First post content", "Second post content");
     }
 
     @Test
     void shouldDeletePost() {
         User author = User.builder()
-                .name("Delete Test User")
+                .firstName("Delete")
+                .lastName("User")
                 .email("delete@example.com")
-                .password("password")
-                .role(RoleEnum.USER)
+                .encodedPassword("password")
+                .roleId(1)
                 .build();
 
         User savedAuthor = userRepository.save(author);
 
         Post post = Post.builder()
-                .title("Post to Delete")
-                .content("This post will be deleted")
-                .author(savedAuthor)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .text("This post will be deleted")
+                .dateAdded(LocalDateTime.now())
+                .dateModified(LocalDateTime.now())
                 .build();
 
         Post savedPost = postRepository.save(post);
