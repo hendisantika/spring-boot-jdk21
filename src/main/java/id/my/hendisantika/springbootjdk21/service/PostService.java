@@ -38,4 +38,14 @@ public class PostService {
         post.setDateModified(LocalDateTime.now());
         return postRepository.save(post);
     }
+
+    public Post updatePost(Long id, Post updatedPost) {
+        Post existingPost = getPostById(id);
+        if (existingPost != null) {
+            existingPost.setText(updatedPost.getText());
+            existingPost.setDateModified(LocalDateTime.now());
+            return postRepository.save(existingPost);
+        }
+        return null;
+    }
 }
