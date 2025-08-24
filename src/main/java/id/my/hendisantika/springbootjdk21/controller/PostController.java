@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -57,5 +59,10 @@ public class PostController {
     @GetMapping("/{id}")
     public Post getPostById(@PathVariable Long id) {
         return postService.getPostById(id);
+    }
+
+    @PostMapping
+    public Post createPost(@RequestBody Post post) {
+        return postService.createPost(post);
     }
 }
