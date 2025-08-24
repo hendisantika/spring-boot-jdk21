@@ -12,6 +12,7 @@ file uploads.
 - **Responsive UI**: Thymeleaf templates with modern styling
 - **MySQL Database**: Persistent data storage
 - **Docker Support**: Complete containerization with Docker Compose
+- **Integration Testing**: Comprehensive tests with Testcontainers for real database testing
 
 ## Technology Stack
 
@@ -23,6 +24,7 @@ file uploads.
 - **HTMX**: Modern web interactions
 - **MySQL 9.4**: Database
 - **Docker & Docker Compose**: Containerization
+- **Testcontainers**: Integration testing with real databases
 - **Lombok**: Reduce boilerplate code
 - **Maven**: Build and dependency management
 
@@ -178,9 +180,26 @@ File uploads are handled by `FileStorageService.java` with configurable storage 
 
 ### Running Tests
 
+#### Unit Tests
 ```bash
 ./mvnw test
 ```
+
+#### Integration Tests with Testcontainers
+
+The project includes comprehensive integration tests using Testcontainers that spin up real MySQL containers:
+
+```bash
+./mvnw test -Dtest="*IntegrationTest"
+```
+
+**Integration Test Features:**
+
+- **Real Database Testing**: Uses actual MySQL 9.4 containers instead of in-memory databases
+- **Automatic Container Management**: Testcontainers handles container lifecycle automatically
+- **Repository Layer Tests**: Tests JPA repositories with real database interactions
+- **Service Layer Tests**: Tests business logic with full Spring context and database
+- **Isolated Test Environment**: Each test class gets a fresh database state
 
 ### Creating Docker Image
 
