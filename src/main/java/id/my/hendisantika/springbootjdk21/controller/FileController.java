@@ -2,7 +2,11 @@ package id.my.hendisantika.springbootjdk21.controller;
 
 import id.my.hendisantika.springbootjdk21.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,6 +50,19 @@ public class FileController {
             return ResponseEntity.ok("PDF uploaded successfully: " + filename);
         } catch (IOException e) {
             return ResponseEntity.badRequest().body("Failed to upload PDF: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/download/image/{filename}")
+    public ResponseEntity<byte[]> getImage(@PathVariable String filename) {
+        try {
+            byte[] fileData = fileStorageService.getFile(filename);
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(fileData);
+        } catch (IOException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }
