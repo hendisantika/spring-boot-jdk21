@@ -48,4 +48,8 @@ public class PostService {
         }
         return null;
     }
+
+    public void deletePost(Long id) {
+        postRepository.deleteById(id);
+    }
 }
