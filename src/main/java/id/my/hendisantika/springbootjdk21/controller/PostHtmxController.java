@@ -5,6 +5,7 @@ import id.my.hendisantika.springbootjdk21.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,6 +65,14 @@ public class PostHtmxController {
         Post post = postService.getPostById(id);
         post.setText(text);
         postService.updatePost(id, post);
+        List<Post> posts = postService.getAllPosts();
+        model.addAttribute("posts", posts);
+        return "blog/all-posts :: #posts-list";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deletePost(@PathVariable Long id, Model model) {
+        postService.deletePost(id);
         List<Post> posts = postService.getAllPosts();
         model.addAttribute("posts", posts);
         return "blog/all-posts :: #posts-list";
