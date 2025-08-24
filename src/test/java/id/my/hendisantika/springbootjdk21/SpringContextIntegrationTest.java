@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@Import(TestcontainersConfiguration.class)
-@ActiveProfiles("test")
+@Import({TestcontainersConfiguration.class, CiTestConfiguration.class})
+@ActiveProfiles({"test", "ci"})
 class SpringContextIntegrationTest {
 
     @Test

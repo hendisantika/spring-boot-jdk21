@@ -213,6 +213,21 @@ The project includes comprehensive integration tests using Testcontainers that s
 ./mvnw test -Dtest="SimpleUnitTest"
 ```
 
+#### CI/GitHub Actions Testing
+
+For CI environments, use the `ci` profile with external MySQL service:
+
+```bash
+./mvnw test -Dtest="*IntegrationTest" -Dspring.profiles.active=ci
+```
+
+The project includes a GitHub Actions workflow (`.github/workflows/ci.yml`) that:
+
+- Runs fast unit tests first
+- Uses MySQL service container for integration tests
+- Falls back to Testcontainers as a separate job
+- Includes proper caching and timeouts
+
 ### Creating Docker Image
 
 ```bash

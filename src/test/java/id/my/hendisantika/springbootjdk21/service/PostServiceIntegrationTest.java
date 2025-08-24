@@ -1,5 +1,6 @@
 package id.my.hendisantika.springbootjdk21.service;
 
+import id.my.hendisantika.springbootjdk21.CiTestConfiguration;
 import id.my.hendisantika.springbootjdk21.TestcontainersConfiguration;
 import id.my.hendisantika.springbootjdk21.entity.Post;
 import id.my.hendisantika.springbootjdk21.entity.User;
@@ -19,8 +20,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Import(TestcontainersConfiguration.class)
-@ActiveProfiles("test")
+@Import({TestcontainersConfiguration.class, CiTestConfiguration.class})
+@ActiveProfiles({"test", "ci"})
 @Transactional
 class PostServiceIntegrationTest {
 

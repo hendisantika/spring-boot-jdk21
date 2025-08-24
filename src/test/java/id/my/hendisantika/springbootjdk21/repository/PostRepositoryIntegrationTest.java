@@ -1,5 +1,6 @@
 package id.my.hendisantika.springbootjdk21.repository;
 
+import id.my.hendisantika.springbootjdk21.CiTestConfiguration;
 import id.my.hendisantika.springbootjdk21.TestcontainersConfiguration;
 import id.my.hendisantika.springbootjdk21.entity.Post;
 import id.my.hendisantika.springbootjdk21.entity.User;
@@ -17,9 +18,9 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@Import(TestcontainersConfiguration.class)
+@Import({TestcontainersConfiguration.class, CiTestConfiguration.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@ActiveProfiles("test")
+@ActiveProfiles({"test", "ci"})
 class PostRepositoryIntegrationTest {
 
     @Autowired
