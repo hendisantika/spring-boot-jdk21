@@ -6,6 +6,7 @@ import id.my.hendisantika.springbootjdk21.entity.User;
 import id.my.hendisantika.springbootjdk21.repository.UserRepository;
 import id.my.hendisantika.springbootjdk21.security.RoleEnum;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -65,5 +66,21 @@ public class AuthService {
             }
         }
         return null;
+    }
+
+    public void signOut(HttpServletRequest request, HttpServletResponse response) {
+        Cookie cookie = new Cookie(COOKIE_NAME, null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+        Optional<User> userOptional = getUserFromSession(request);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setSessionId(null);
+            user.setRoleId(RoleEnum.SIGNED_OUT.getRoleId());
+            user.setRoleName(RoleEnum.SIGNED_OUT.getRoleName());
+            userRepository.save(user);
+        }
     }
 }
