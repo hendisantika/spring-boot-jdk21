@@ -65,4 +65,17 @@ public class FileController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/download/pdf/{filename}")
+    public ResponseEntity<byte[]> getPdf(@PathVariable String filename) {
+        try {
+            byte[] fileData = fileStorageService.getFile(filename);
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(fileData);
+        } catch (IOException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
