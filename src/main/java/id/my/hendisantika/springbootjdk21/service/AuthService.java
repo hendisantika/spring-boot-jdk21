@@ -83,4 +83,17 @@ public class AuthService {
             userRepository.save(user);
         }
     }
+
+    public Optional<User> getUserFromSession(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (COOKIE_NAME.equals(cookie.getName())) {
+                    String sessionId = cookie.getValue();
+                    return userRepository.findBySessionId(sessionId);
+                }
+            }
+        }
+        return Optional.empty();
+    }
 }
