@@ -1,13 +1,19 @@
 package id.my.hendisantika.springbootjdk21.service;
 
+import id.my.hendisantika.springbootjdk21.dto.SignInDTO;
 import id.my.hendisantika.springbootjdk21.dto.SignUpDTO;
 import id.my.hendisantika.springbootjdk21.entity.User;
 import id.my.hendisantika.springbootjdk21.repository.UserRepository;
 import id.my.hendisantika.springbootjdk21.security.RoleEnum;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,5 +45,25 @@ public class AuthService {
         user.setRoleId(RoleEnum.SIGNED_OUT.getRoleId());
         user.setRoleName(RoleEnum.SIGNED_OUT.getRoleName());
         return userRepository.save(user);
+    }
+
+    public User signIn(SignInDTO request, HttpServletResponse response) {
+        Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (passwordEncoder.matches(request.getPassword(), user.getEncodedPassword())) {
+                String sessionId = UUID.randomUUID().toString();
+                Cookie cookie = new Cookie(COOKIE_NAME, sessionId);
+                cookie.setHttpOnly(true);
+                cookie.setSecure(true);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+                user.setSessionId(sessionId);
+                user.setRoleId(RoleEnum.USER.getRoleId());
+                user.setRoleName(RoleEnum.USER.getRoleName());
+                return userRepository.save(user);
+            }
+        }
+        return null;
     }
 }
