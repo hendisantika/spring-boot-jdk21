@@ -53,4 +53,8 @@ public class FileStorageService {
     private String getFileExtension(String filename) {
         return filename.substring(filename.lastIndexOf(".") + 1);
     }
+
+    private boolean isValidImageFile(String extension) {
+        return "jpg".equalsIgnoreCase(extension) || "jpeg".equalsIgnoreCase(extension);
+    }
 }
