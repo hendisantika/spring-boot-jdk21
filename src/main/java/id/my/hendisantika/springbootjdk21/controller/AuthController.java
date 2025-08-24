@@ -1,7 +1,13 @@
 package id.my.hendisantika.springbootjdk21.controller;
 
+import id.my.hendisantika.springbootjdk21.dto.SignUpDTO;
+import id.my.hendisantika.springbootjdk21.entity.User;
 import id.my.hendisantika.springbootjdk21.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,5 +29,9 @@ public class AuthController {
 
     private final AuthService authService;
 
-
+    @PostMapping("/sign-up")
+    public ResponseEntity<User> signUp(@RequestBody SignUpDTO signUpDTO) {
+        User user = authService.signUp(signUpDTO);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
+    }
 }
