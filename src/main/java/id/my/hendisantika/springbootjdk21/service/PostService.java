@@ -5,6 +5,7 @@ import id.my.hendisantika.springbootjdk21.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -30,5 +31,11 @@ public class PostService {
 
     public Post getPostById(Long id) {
         return postRepository.findById(id).orElse(null);
+    }
+
+    public Post createPost(Post post) {
+        post.setDateAdded(LocalDateTime.now());
+        post.setDateModified(LocalDateTime.now());
+        return postRepository.save(post);
     }
 }
