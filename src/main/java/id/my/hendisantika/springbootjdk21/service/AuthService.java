@@ -9,6 +9,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -95,5 +96,18 @@ public class AuthService {
             }
         }
         return Optional.empty();
+    }
+
+    public void makeUserAdmin(HttpServletRequest request) {
+        Optional<User> userOptional = getUserFromSession(request);
+
+        if (!userOptional.isPresent()) {
+            throw new AccessDeniedException("unauthorized");
+        }
+
+        User user = userOptional.get();
+        user.setRoleId(RoleEnum.ADMIN.getRoleId());
+        user.setRoleName(RoleEnum.ADMIN.getRoleName());
+        userRepository.save(user);
     }
 }
