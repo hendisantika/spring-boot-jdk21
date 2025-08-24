@@ -4,6 +4,7 @@ import id.my.hendisantika.springbootjdk21.dto.SignInDTO;
 import id.my.hendisantika.springbootjdk21.dto.SignUpDTO;
 import id.my.hendisantika.springbootjdk21.entity.User;
 import id.my.hendisantika.springbootjdk21.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -44,5 +45,11 @@ public class AuthController {
             return new ResponseEntity<>("Invalid email or password", HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping("/sign-out")
+    public ResponseEntity<String> signOut(HttpServletRequest request, HttpServletResponse response) {
+        authService.signOut(request, response);
+        return new ResponseEntity<>("Successfully signed out", HttpStatus.OK);
     }
 }
