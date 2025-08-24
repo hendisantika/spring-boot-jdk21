@@ -180,7 +180,13 @@ File uploads are handled by `FileStorageService.java` with configurable storage 
 
 ### Running Tests
 
-#### Unit Tests
+#### Unit Tests (Fast)
+
+```bash
+./mvnw test -Dtest="*UnitTest,SimpleUnitTest,SpringBootJdk21ApplicationTests"
+```
+
+#### All Tests
 ```bash
 ./mvnw test
 ```
