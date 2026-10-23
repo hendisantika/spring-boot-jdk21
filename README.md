@@ -1,7 +1,14 @@
-# Spring Boot JDK 21 Blog Application
+# Spring Boot JDK 25 Blog Application
 
-A modern blog application built with Spring Boot 3.5.5 and Java 21, featuring user authentication, post management, and
+[![CI](https://github.com/hendisantika/spring-boot-jdk21/actions/workflows/ci.yml/badge.svg)](https://github.com/hendisantika/spring-boot-jdk21/actions/workflows/ci.yml)
+[![Java CI with Maven](https://github.com/hendisantika/spring-boot-jdk21/actions/workflows/maven.yml/badge.svg)](https://github.com/hendisantika/spring-boot-jdk21/actions/workflows/maven.yml)
+![Java](https://img.shields.io/badge/Java-25-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.1-brightgreen)
+
+A modern blog application built with Spring Boot 4.1.1 and Java 25, featuring user authentication, post management, and
 file uploads.
+
+> The repository name still says `jdk21` for historical reasons; the project now targets **JDK 25**.
 
 ## Features
 
@@ -16,15 +23,15 @@ file uploads.
 
 ## Technology Stack
 
-- **Java 21**: Latest LTS version with modern language features
-- **Spring Boot 3.5.5**: Latest Spring Boot framework
+- **Java 25**: Latest LTS version with modern language features
+- **Spring Boot 4.1.1**: Latest Spring Boot framework
 - **Spring Security**: Authentication and authorization
 - **Spring Data JPA**: Data persistence layer
 - **Thymeleaf**: Server-side templating engine
 - **HTMX**: Modern web interactions
 - **MySQL 9.4**: Database
 - **Docker & Docker Compose**: Containerization
-- **Testcontainers**: Integration testing with real databases
+- **Testcontainers 2**: Integration testing with real databases
 - **Lombok**: Reduce boilerplate code
 - **Maven**: Build and dependency management
 
@@ -72,8 +79,8 @@ src/
 
 ### Prerequisites
 
-- Java 21 or later
-- Maven 3.6+
+- Java 25 or later
+- Maven 3.9+ (or use the bundled `./mvnw` wrapper)
 - Docker and Docker Compose (for containerized deployment)
 
 ### Running with Docker Compose (Recommended)
@@ -221,17 +228,39 @@ For CI environments, use the `ci` profile with external MySQL service:
 ./mvnw test -Dtest="*IntegrationTest" -Dspring.profiles.active=ci
 ```
 
-The project includes a GitHub Actions workflow (`.github/workflows/ci.yml`) that:
+The project includes two GitHub Actions workflows, both running on Temurin JDK 25:
 
-- Runs fast unit tests first
-- Uses MySQL service container for integration tests
-- Falls back to Testcontainers as a separate job
-- Includes proper caching and timeouts
+- `.github/workflows/ci.yml`
+  - Runs fast unit tests first
+  - Uses MySQL service container for integration tests
+  - Runs the Testcontainers integration tests as a separate job
+  - Includes proper caching and timeouts
+- `.github/workflows/maven.yml`
+  - Builds and packages the app with all tests (`mvn -B package`)
+  - Submits the dependency graph to improve Dependabot alerts
+
+### Dependency Updates (Dependabot)
+
+Dependabot (`.github/dependabot.yml`) keeps dependencies current and opens PRs with Conventional Commit messages
+(`build(deps): ...`, `ci(deps): ...`):
+
+| Ecosystem        | Covers                   | Schedule        | Grouping                                                 |
+|------------------|--------------------------|-----------------|----------------------------------------------------------|
+| `maven`          | `pom.xml`                | Daily 05:00 WIB | Spring Boot, Testcontainers, other minor/patch updates   |
+| `github-actions` | `.github/workflows/*`    | Daily 05:00 WIB | All actions in one PR                                    |
+| `docker`         | `Dockerfile` base images | Weekly (Monday) | -                                                        |
+| `docker-compose` | `compose.yaml` images    | Weekly (Monday) | -                                                        |
 
 ### Creating Docker Image
 
 ```bash
 ./mvnw spring-boot:build-image
+```
+
+Or build with the multi-stage `Dockerfile` (Maven + Temurin 25 build, `eclipse-temurin:25-jre` runtime):
+
+```bash
+docker build -t spring-boot-jdk25 .
 ```
 
 ## Contributing
