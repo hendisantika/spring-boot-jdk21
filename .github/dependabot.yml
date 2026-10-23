@@ -1,5 +1,6 @@
 version: 2
 updates:
+  # Maven dependencies (pom.xml)
   - package-ecosystem: maven
     directory: "/"
     schedule:
@@ -7,6 +8,24 @@ updates:
       time: '05:00'
       timezone: Asia/Jakarta
     open-pull-requests-limit: 10
+    assignees:
+      - hendisantika
+    commit-message:
+      prefix: "build"
+      include: "scope"
+    groups:
+      spring-boot:
+        patterns:
+          - "org.springframework.boot*"
+      testcontainers:
+        patterns:
+          - "org.testcontainers*"
+      maven-minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+
+  # GitHub Actions used in .github/workflows
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -14,3 +33,42 @@ updates:
       time: '05:00'
       timezone: Asia/Jakarta
     open-pull-requests-limit: 10
+    assignees:
+      - hendisantika
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  # Base images in Dockerfile
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: '05:00'
+      timezone: Asia/Jakarta
+    open-pull-requests-limit: 5
+    assignees:
+      - hendisantika
+    commit-message:
+      prefix: "build"
+      include: "scope"
+
+  # Service images in compose.yaml
+  - package-ecosystem: "docker-compose"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: '05:00'
+      timezone: Asia/Jakarta
+    open-pull-requests-limit: 5
+    assignees:
+      - hendisantika
+    commit-message:
+      prefix: "build"
+      include: "scope"
